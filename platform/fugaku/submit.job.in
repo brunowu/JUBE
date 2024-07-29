@@ -5,6 +5,7 @@
 #PJM -L node=#NODES#
 #PJM --mpi proc=#TASKS#
 #PJM_MPI_SHAPE#
+#PJM_MPI_RANK#
 #PJM -x PJM_LLIO_GFSCACHE=#GFSCACHE#
 #PJM -L elapse=#TIME_LIMIT#
 #PJM -L rscgrp=#RSCGROUP#
