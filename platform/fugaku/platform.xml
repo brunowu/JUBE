@@ -19,10 +19,20 @@
     <parameterset name="systemParameter">
         <!-- Default jobscript parameter -->
         <parameter name="nodes" type="int">1</parameter>
+        <parameter name="nodeshape" type="string">torus</parameter>
+        <parameter name="nodes_num" mode="python">
+            eval('*'.join("$nodes".split('x'))) if 'x' in "$nodes" else int("$nodes")
+        </parameter>
+        <parameter name="Lnode" mode="python">
+            "$nodes" if "$nodeshape" == "" else "$nodes:$nodeshape"
+        </parameter>
+        <parameter name="mpi_shape" mode="python">
+            "" if "$nodeshape" == "" else "#PJM --mpi “shape=$nodes"
+        </parameter>
         <parameter name="taskspernode" type="int">1</parameter>
         <parameter name="threadspertask" type="int">1</parameter>
         <parameter name="tasks" mode="python" type="int">
-            $nodes * $taskspernode
+            $nodes_num * $taskspernode
         </parameter>
         <parameter name="OMP_NUM_THREADS" type="int" export="true">
             $threadspertask
@@ -61,8 +71,9 @@
         <sub source="#NOTIFICATION_TYPE#" dest="$notification_fujitsu" />
         <sub source="#BENCHNAME#"
             dest="&quot;${jube_benchmark_name}_${jube_step_name}_${jube_wp_id}&quot;" />
-        <sub source="#NODES#" dest="$nodes" />
+        <sub source="#NODES#" dest="$Lnode" />
         <sub source="#TASKS#" dest="$tasks" />
+        <sub source="#PJM_MPI_SHAPE#" dest="$mpi_shape" />
         <sub source="#TIME_LIMIT#" dest="$timelimit" />
         <sub source="#PREPROCESS#" dest="$preprocess" />
         <sub source="#POSTPROCESS#" dest="$postprocess" />
