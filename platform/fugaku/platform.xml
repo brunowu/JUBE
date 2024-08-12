@@ -29,9 +29,10 @@
         <parameter name="mpi_shape" mode="python">
             "" if "$nodeshape" == "" else "#PJM --mpi “shape=$nodes"
         </parameter>
-        <parameter name="mpi_ranking">""</parameter><!-- bychip;bynode-->
+	<parameter name="mpi_ranking">""</parameter><!-- bychip;bynode-->
+        <parameter name="mpi_ranking_order">XY</parameter><!-- XY;YX;XYZ..-->	
         <parameter name="mpi_ranking_conf" mode="python">
-            "" if "$nodeshape" == "" else f"#PJM --mpi rank-mab-${mpi_ranking}={'XY' if len('$nodes'.split('x')) == 2 else 'XYZ'}"
+		"" if "$mpi_ranking" == "" else f"#PJM --mpi rank-map-${mpi_ranking}=${mpi_ranking_order}"
         </parameter>
         <parameter name="taskspernode" type="int">1</parameter>
         <parameter name="threadspertask" type="int">1</parameter>
